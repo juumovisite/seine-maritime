@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function TourViewer({ scenes }: { scenes: any[] }) {
   const [activeScene, setActiveScene] = useState(
@@ -11,6 +11,17 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
   const currentScene = scenes.find(
     (s) => s.data.nom_scene_krpano === activeScene
   );
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.action === "scenechanged" && event.data.scene) {
+        setActiveScene(event.data.scene);
+        setShowFiche(true);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const changeScene = (sceneName: string) => {
     setActiveScene(sceneName);
@@ -94,7 +105,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
           boxShadow: "0 25px 60px rgba(0, 0, 0, 0.3)",
           zIndex: 10,
         }}>
-          {/* Background gradient */}
           <div style={{
             position: "absolute",
             top: 0, left: 0, right: 0, bottom: 0,
@@ -103,7 +113,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
           }} />
 
           <div style={{ position: "relative", zIndex: 1, padding: "28px 24px 24px" }}>
-            {/* Bouton fermer */}
             <button onClick={() => setShowFiche(false)} style={{
               position: "absolute", top: 16, right: 18,
               background: "none", border: "none", fontSize: 18,
@@ -111,7 +120,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               fontFamily: "'Inter', sans-serif",
             }}>✕</button>
 
-            {/* Header: Catégorie + Badge */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               {currentScene.data.categorie && (
                 <span style={{
@@ -140,7 +148,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               )}
             </div>
 
-            {/* Titre */}
             <h2 style={{
               fontSize: 28,
               fontWeight: 800,
@@ -152,7 +159,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               {currentScene.data.title}
             </h2>
 
-            {/* Description */}
             <p style={{
               fontSize: 13.5,
               lineHeight: 1.65,
@@ -162,7 +168,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               {currentScene.data.description?.[0]?.text || ""}
             </p>
 
-            {/* Infos en grille */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
               {currentScene.data.institution && (
                 <InfoCard icon="🏛️" label="Institution" value={currentScene.data.institution} />
@@ -178,7 +183,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               )}
             </div>
 
-            {/* Bouton principal */}
             <button style={{
               display: "flex",
               alignItems: "center",
@@ -202,7 +206,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               Explorer l&apos;histoire →
             </button>
 
-            {/* Bouton secondaire */}
             <button style={{
               display: "flex",
               alignItems: "center",
