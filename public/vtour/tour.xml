@@ -69,6 +69,18 @@
 	       cursor="pointer"
 	       />
 
+	<style name="info_point"
+	       url="skin/hotspot_info_point.svg"
+	       width="40" height="40"
+	       scale="1.0"
+	       edge="center"
+	       onloaded="do_pulse_pink();"
+	       onover="tween(scale, 1.15, 0.2, easeOutBack); show_hs_tooltip();"
+	       onout="tween(scale, 1.0, 0.2, easeOutBack); do_pulse_pink(); hide_hs_tooltip();"
+	       onclick="js(window.showInfoPoint(get(info_id)));"
+	       cursor="pointer"
+	       />
+
 	<layer name="hs_tt"
 	       type="text"
 	       html=""
@@ -96,6 +108,16 @@
 	    set(layer[hs_tt].align, lefttop);
 	    tween(layer[hs_tt].alpha, 1.0, 0.2);
 	  );
+	  if(info_text,
+	    copy(layer[hs_tt].html, info_text);
+	    set(layer[hs_tt].visible, true);
+	    copy(layer[hs_tt].x, mouse.x);
+	    copy(layer[hs_tt].y, mouse.y);
+	    sub(layer[hs_tt].y, 50);
+	    add(layer[hs_tt].x, 10);
+	    set(layer[hs_tt].align, lefttop);
+	    tween(layer[hs_tt].alpha, 1.0, 0.2);
+	  );
 	</action>
 
 	<action name="hide_hs_tooltip">
@@ -111,6 +133,14 @@
 	  );
 	</action>
 
+	<action name="do_pulse_pink">
+	  tween(alpha, 0.7, 1.0, easeInOutSine);
+	  tween(scale, 1.06, 1.0, easeInOutSine,
+	    tween(alpha, 1.0, 1.0, easeInOutSine);
+	    tween(scale, 1.0, 1.0, easeInOutSine, do_pulse_pink());
+	  );
+	</action>
+
 	<scene name="scene_seine_bunker" title="Seine_bunker" onstart="" thumburl="panos/Seine_bunker.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
 		<control bouncinglimits="calc:image.cube ? true : false" />
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
@@ -120,6 +150,8 @@
 		</image>
 		<hotspot name="spot1972035432" style="info_hotspot" ath="-18.794" atv="11.117" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hotel du Departement" />
 		<hotspot name="spot1972035531" style="info_hotspot" ath="35.54" atv="10.098" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hemicycle" />
+		<hotspot name="info_bunker_1" style="info_point" ath="-5.0" atv="8.0" info_id="bunker_porte" info_text="Porte Blindee" />
+		<hotspot name="info_bunker_2" style="info_point" ath="60.0" atv="5.0" info_id="bunker_equipements" info_text="Equipements" />
 	</scene>
 
 	<scene name="scene_seine_bureau" title="Seine_bureau" onstart="" thumburl="panos/Seine_bureau.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
@@ -130,6 +162,8 @@
 			<cube url="panos/Seine_bureau.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
 		<hotspot name="spot1972036066" style="info_hotspot" ath="161.346" atv="-14.582" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hotel du Departement" />
+		<hotspot name="info_bureau_1" style="info_point" ath="10.0" atv="5.0" info_id="bureau_desk" info_text="Bureau Presidentiel" />
+		<hotspot name="info_bureau_2" style="info_point" ath="-30.0" atv="-5.0" info_id="bureau_drapeaux" info_text="Les Drapeaux" />
 	</scene>
 
 	<scene name="scene_seine_hemicycle" title="Seine_hemicycle" onstart="" thumburl="panos/Seine_hemicycle.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
@@ -141,6 +175,8 @@
 		</image>
 		<hotspot name="spot1972040521" style="info_hotspot" ath="-123.456" atv="4.428" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hotel du Departement" />
 		<hotspot name="spot1972040608" style="info_hotspot" ath="39.98" atv="4.949" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Bureau du President" />
+		<hotspot name="info_hemi_1" style="info_point" ath="0.0" atv="10.0" info_id="hemi_tribune" info_text="La Tribune" />
+		<hotspot name="info_hemi_2" style="info_point" ath="45.0" atv="15.0" info_id="hemi_sieges" info_text="Les Sieges" />
 	</scene>
 
 	<scene name="scene_seine_hotel" title="Seine_hotel" onstart="" thumburl="panos/Seine_hotel.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
@@ -154,6 +190,7 @@
 		<hotspot name="spot1972035805" style="info_hotspot" ath="-64.341" atv="27.397" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Bureau du President" />
 		<hotspot name="spot1972035875" style="info_hotspot" ath="9.567" atv="24.696" depth="1000.0" linkedscene="scene_seine_tour" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Tour des Archives" />
 		<hotspot name="spot1972040362" style="info_hotspot" ath="-99.763" atv="36.474" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hemicycle" />
+		<hotspot name="info_hotel_1" style="info_point" ath="-45.0" atv="10.0" info_id="hotel_escalier" info_text="Escalier d Honneur" />
 	</scene>
 
 	<scene name="scene_seine_tour" title="Seine_tour" onstart="" thumburl="panos/Seine_tour.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
@@ -164,6 +201,7 @@
 			<cube url="panos/Seine_tour.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
 		<hotspot name="spot1972040251" style="info_hotspot" ath="-125.882" atv="-6.707" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" linkedscene_text="Hotel du Departement" />
+		<hotspot name="info_tour_1" style="info_point" ath="20.0" atv="-10.0" info_id="tour_vue" info_text="Vue Panoramique" />
 	</scene>
 
 </krpano>

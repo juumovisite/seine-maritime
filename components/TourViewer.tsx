@@ -6,6 +6,8 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
     scenes[0]?.data?.nom_scene_krpano || "scene_seine_bureau"
   );
   const [showFiche, setShowFiche] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
+  const [infoId, setInfoId] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const currentScene = scenes.find(
@@ -17,6 +19,12 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
       if (event.data?.action === "scenechanged" && event.data.scene) {
         setActiveScene(event.data.scene);
         setShowFiche(true);
+        setShowInfo(false);
+      }
+      if (event.data?.action === "showinfo" && event.data.id) {
+        setInfoId(event.data.id);
+        setShowInfo(true);
+        setShowFiche(false);
       }
     };
     window.addEventListener("message", handleMessage);
@@ -26,6 +34,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
   const changeScene = (sceneName: string) => {
     setActiveScene(sceneName);
     setShowFiche(true);
+    setShowInfo(false);
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage(
@@ -40,6 +49,41 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
     { n: "scene_seine_bunker", l: "DOCUMENTS", icon: "◻◻" },
     { n: "scene_seine_hemicycle", l: "VUES", icon: "◉" },
   ];
+
+  const infos: Record<string, { title: string; text: string; image?: string }> = {
+    bureau_desk: {
+      title: "Le Bureau Présidentiel",
+      text: "Ce bureau en chêne massif date de 1892. Il a été le témoin de nombreuses décisions historiques pour le département de la Seine-Maritime. Son design allie fonctionnalité et prestige républicain.",
+    },
+    bureau_drapeaux: {
+      title: "Les Drapeaux",
+      text: "Le drapeau tricolore français et le drapeau européen encadrent le siège présidentiel, symboles de l'ancrage républicain et européen du département.",
+    },
+    hemi_tribune: {
+      title: "La Tribune",
+      text: "Depuis cette tribune, les élus départementaux prennent la parole lors des sessions plénières du conseil. Elle est le lieu central du débat démocratique local.",
+    },
+    hemi_sieges: {
+      title: "L'Hémicycle",
+      text: "Les 70 sièges de l'hémicycle accueillent les conseillers départementaux lors des sessions. La disposition en arc de cercle favorise le débat et l'échange.",
+    },
+    bunker_porte: {
+      title: "Porte Blindée",
+      text: "Cette porte blindée d'origine, épaisse de 30 centimètres, protégeait les occupants des bombardements. Elle témoigne de l'ingénierie militaire de l'époque.",
+    },
+    bunker_equipements: {
+      title: "Équipements d'Époque",
+      text: "Les systèmes de ventilation et de communication d'origine sont encore visibles. Ils permettaient aux occupants de rester en contact avec l'extérieur en toute sécurité.",
+    },
+    hotel_escalier: {
+      title: "L'Escalier d'Honneur",
+      text: "Cet escalier monumental en pierre de taille est l'un des joyaux architecturaux du bâtiment. Il dessert les étages nobles de l'Hôtel du Département.",
+    },
+    tour_vue: {
+      title: "Vue Panoramique",
+      text: "Depuis le sommet de la Tour des Archives, on peut admirer une vue à 360° sur Rouen, la Seine et les collines environnantes. Par temps clair, la vue s'étend sur plus de 30 kilomètres.",
+    },
+  };
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative", overflow: "hidden", fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
@@ -123,25 +167,17 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               {currentScene.data.categorie && (
                 <span style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 1.5,
-                  color: "#e8806a",
-                  textTransform: "uppercase",
+                  fontSize: 11, fontWeight: 700, letterSpacing: 1.5,
+                  color: "#e8806a", textTransform: "uppercase",
                 }}>
                   {currentScene.data.categorie}
                 </span>
               )}
               {currentScene.data.badge && (
                 <span style={{
-                  background: "#e8806a",
-                  color: "white",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  letterSpacing: 1,
-                  padding: "6px 14px",
-                  borderRadius: 20,
-                  textTransform: "uppercase",
+                  background: "#e8806a", color: "white",
+                  fontSize: 10, fontWeight: 700, letterSpacing: 1,
+                  padding: "6px 14px", borderRadius: 20, textTransform: "uppercase",
                 }}>
                   {currentScene.data.badge}
                 </span>
@@ -149,22 +185,13 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
             </div>
 
             <h2 style={{
-              fontSize: 28,
-              fontWeight: 800,
-              color: "#1a2332",
-              marginBottom: 14,
-              lineHeight: 1.15,
-              fontFamily: "'Inter', sans-serif",
+              fontSize: 28, fontWeight: 800, color: "#1a2332",
+              marginBottom: 14, lineHeight: 1.15, fontFamily: "'Inter', sans-serif",
             }}>
               {currentScene.data.title}
             </h2>
 
-            <p style={{
-              fontSize: 13.5,
-              lineHeight: 1.65,
-              color: "#5a6577",
-              marginBottom: 24,
-            }}>
+            <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#5a6577", marginBottom: 24 }}>
               {currentScene.data.description?.[0]?.text || ""}
             </p>
 
@@ -184,47 +211,89 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
             </div>
 
             <button style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              width: "100%",
-              padding: 16,
-              border: "none",
-              borderRadius: 16,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              width: "100%", padding: 16, border: "none", borderRadius: 16,
               background: "linear-gradient(135deg, #5bb8a9, #4da89a)",
-              color: "white",
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: 1.5,
-              textTransform: "uppercase",
-              cursor: "pointer",
-              boxShadow: "0 4px 15px rgba(91, 184, 169, 0.35)",
-              marginBottom: 12,
+              color: "white", fontFamily: "'Inter', sans-serif",
+              fontSize: 13, fontWeight: 700, letterSpacing: 1.5,
+              textTransform: "uppercase", cursor: "pointer",
+              boxShadow: "0 4px 15px rgba(91, 184, 169, 0.35)", marginBottom: 12,
             }}>
               Explorer l&apos;histoire →
             </button>
 
             <button style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              padding: 16,
-              border: "2px solid #d9dee5",
-              borderRadius: 16,
-              background: "transparent",
-              color: "#1a2332",
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: 1.5,
-              textTransform: "uppercase",
-              cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              width: "100%", padding: 16, border: "2px solid #d9dee5", borderRadius: 16,
+              background: "transparent", color: "#1a2332", fontFamily: "'Inter', sans-serif",
+              fontSize: 13, fontWeight: 700, letterSpacing: 1.5,
+              textTransform: "uppercase", cursor: "pointer",
             }}>
               Fiche Technique
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Popup info point */}
+      {showInfo && infoId && infos[infoId] && (
+        <div style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 420,
+          borderRadius: 24,
+          overflow: "hidden",
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.3)",
+          zIndex: 20,
+          fontFamily: "'Inter', sans-serif",
+        }}>
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, right: 0, height: 6,
+            background: "linear-gradient(90deg, #E91E7A, #ff6b9d)",
+          }} />
+
+          <div style={{ padding: "32px 28px 28px" }}>
+            <button onClick={() => { setShowInfo(false); setShowFiche(true); }} style={{
+              position: "absolute", top: 16, right: 18,
+              background: "none", border: "none", fontSize: 18,
+              cursor: "pointer", color: "#999",
+            }}>✕</button>
+
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              background: "rgba(233, 30, 122, 0.1)",
+              padding: "6px 14px", borderRadius: 20, marginBottom: 16,
+            }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#E91E7A">
+                <circle cx="12" cy="8" r="1.5" />
+                <rect x="11" y="11" width="2.5" height="7" rx="1" />
+              </svg>
+              <span style={{
+                fontSize: 10, fontWeight: 700, color: "#E91E7A",
+                textTransform: "uppercase", letterSpacing: 1.5,
+              }}>
+                Point d&apos;intérêt
+              </span>
+            </div>
+
+            <h3 style={{
+              fontSize: 24, fontWeight: 800, color: "#1a2332",
+              marginBottom: 14, lineHeight: 1.2,
+            }}>
+              {infos[infoId].title}
+            </h3>
+
+            <p style={{
+              fontSize: 14, color: "#5a6577", lineHeight: 1.7, marginBottom: 0,
+            }}>
+              {infos[infoId].text}
+            </p>
           </div>
         </div>
       )}
@@ -277,27 +346,17 @@ function InfoCard({ icon, label, value }: { icon: string; label: string; value: 
     <div style={{
       background: "rgba(255, 255, 255, 0.85)",
       border: "1px solid rgba(0, 0, 0, 0.06)",
-      borderRadius: 16,
-      padding: 16,
-      textAlign: "center",
+      borderRadius: 16, padding: 16, textAlign: "center",
       backdropFilter: "blur(10px)",
     }}>
       <div style={{ fontSize: 20, marginBottom: 6 }}>{icon}</div>
       <div style={{
-        fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: 0.8,
-        color: "#e8806a",
-        textTransform: "uppercase",
-        marginBottom: 4,
+        fontSize: 10, fontWeight: 600, letterSpacing: 0.8,
+        color: "#e8806a", textTransform: "uppercase", marginBottom: 4,
       }}>
         {label}
       </div>
-      <div style={{
-        fontSize: 14,
-        fontWeight: 700,
-        color: "#1a2332",
-      }}>
+      <div style={{ fontSize: 14, fontWeight: 700, color: "#1a2332" }}>
         {value}
       </div>
     </div>
