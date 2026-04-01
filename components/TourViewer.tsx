@@ -5,7 +5,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
   const [activeScene, setActiveScene] = useState(
     scenes[0]?.data?.nom_scene_krpano || "scene_seine_bureau"
   );
-  const [showFiche, setShowFiche] = useState(true);
+  const [showFiche, setShowFiche] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [infoId, setInfoId] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -18,7 +18,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.action === "scenechanged" && event.data.scene) {
         setActiveScene(event.data.scene);
-        setShowFiche(true);
+        setShowFiche(false);
         setShowInfo(false);
       }
       if (event.data?.action === "showinfo" && event.data.id) {
@@ -33,7 +33,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
 
   const changeScene = (sceneName: string) => {
     setActiveScene(sceneName);
-    setShowFiche(true);
+    setShowFiche(false);
     setShowInfo(false);
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow) {
@@ -50,7 +50,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
     { n: "scene_seine_hemicycle", l: "VUES", icon: "◉" },
   ];
 
-  const infos: Record<string, { title: string; text: string; image?: string }> = {
+  const infos: Record<string, { title: string; text: string }> = {
     bureau_desk: {
       title: "Le Bureau Présidentiel",
       text: "Ce bureau en chêne massif date de 1892. Il a été le témoin de nombreuses décisions historiques pour le département de la Seine-Maritime. Son design allie fonctionnalité et prestige républicain.",
@@ -132,6 +132,37 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
           </button>
         ))}
       </div>
+
+      {/* Bouton info en haut à droite */}
+      {!showFiche && !showInfo && (
+        <button
+          onClick={() => setShowFiche(true)}
+          style={{
+            position: "absolute",
+            top: 24,
+            right: 24,
+            width: 48,
+            height: 48,
+            borderRadius: 16,
+            background: "rgba(255,255,255,0.9)",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+            backdropFilter: "blur(10px)",
+            zIndex: 10,
+            fontSize: 22,
+            color: "#1a8a6a",
+            fontWeight: 700,
+            fontFamily: "'Inter', sans-serif",
+            transition: "all 0.3s ease",
+          }}
+        >
+          i
+        </button>
+      )}
 
       {/* Fiche descriptive */}
       {showFiche && currentScene && (
@@ -259,7 +290,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
           }} />
 
           <div style={{ padding: "32px 28px 28px" }}>
-            <button onClick={() => { setShowInfo(false); setShowFiche(true); }} style={{
+            <button onClick={() => { setShowInfo(false); }} style={{
               position: "absolute", top: 16, right: 18,
               background: "none", border: "none", fontSize: 18,
               cursor: "pointer", color: "#999",
