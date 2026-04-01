@@ -2,7 +2,6 @@
 
 	<include url="skin/vtourskin.xml" />
 
-	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
 	<skin_settings maps="false"
 	               maps_type="openstreetmaps"
 	               maps_bing_api_key=""
@@ -58,103 +57,79 @@
 	               design_text_shadow="1"
 	               />
 
-	<!--
-	    For an alternative skin design either change the <skin_settings> values 
-	    from above or optionally include one of the predefined designs from below.
-	-->
-	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
-	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
-	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
-	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
-	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
-	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
-	
+	<style name="info_hotspot"
+	       url="skin/hotspot_info.svg"
+	       width="48" height="48"
+	       scale="1.0"
+	       edge="center"
+	       onloaded="do_pulse();"
+	       onover="tween(scale, 1.15, 0.2, easeOutBack);"
+	       onout="tween(scale, 1.0, 0.2, easeOutBack); do_pulse();"
+	       onclick="loadscene(get(linkedscene), null, MERGE, BLEND(1));"
+	       cursor="pointer"
+	       />
 
-	
+	<action name="do_pulse">
+	  tween(alpha, 0.7, 0.8, easeInOutSine);
+	  tween(scale, 1.08, 0.8, easeInOutSine,
+	    tween(alpha, 1.0, 0.8, easeInOutSine);
+	    tween(scale, 1.0, 0.8, easeInOutSine, do_pulse());
+	  );
+	</action>
+
 	<scene name="scene_seine_bunker" title="Seine_bunker" onstart="" thumburl="panos/Seine_bunker.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
 		<control bouncinglimits="calc:image.cube ? true : false" />
-
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
 		<preview url="panos/Seine_bunker.tiles/preview.jpg" />
-
 		<image>
 			<cube url="panos/Seine_bunker.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
-
-		<hotspot name="spot1972035432" style="skin_hotspotstyle" ath="-18.794" atv="11.117" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
-		<hotspot name="spot1972035531" style="skin_hotspotstyle" ath="35.54" atv="10.098" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" />
-
+		<hotspot name="spot1972035432" style="info_hotspot" ath="-18.794" atv="11.117" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1972035531" style="info_hotspot" ath="35.54" atv="10.098" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" />
 	</scene>
 
 	<scene name="scene_seine_bureau" title="Seine_bureau" onstart="" thumburl="panos/Seine_bureau.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
 		<control bouncinglimits="calc:image.cube ? true : false" />
-
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
 		<preview url="panos/Seine_bureau.tiles/preview.jpg" />
-
 		<image>
 			<cube url="panos/Seine_bureau.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
-
-		<hotspot name="spot1972036066" style="skin_hotspotstyle" ath="161.346" atv="-14.582" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
-
+		<hotspot name="spot1972036066" style="info_hotspot" ath="161.346" atv="-14.582" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
 	</scene>
 
 	<scene name="scene_seine_hemicycle" title="Seine_hemicycle" onstart="" thumburl="panos/Seine_hemicycle.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
 		<control bouncinglimits="calc:image.cube ? true : false" />
-
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
 		<preview url="panos/Seine_hemicycle.tiles/preview.jpg" />
-
 		<image>
 			<cube url="panos/Seine_hemicycle.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
-
-		<hotspot name="spot1972040521" style="skin_hotspotstyle" ath="-123.456" atv="4.428" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
-		<hotspot name="spot1972040608" style="skin_hotspotstyle" ath="39.98" atv="4.949" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" />
-
+		<hotspot name="spot1972040521" style="info_hotspot" ath="-123.456" atv="4.428" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1972040608" style="info_hotspot" ath="39.98" atv="4.949" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" />
 	</scene>
 
 	<scene name="scene_seine_hotel" title="Seine_hotel" onstart="" thumburl="panos/Seine_hotel.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
 		<control bouncinglimits="calc:image.cube ? true : false" />
-
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
 		<preview url="panos/Seine_hotel.tiles/preview.jpg" />
-
 		<image>
 			<cube url="panos/Seine_hotel.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
-
-		<hotspot name="spot1972035688" style="skin_hotspotstyle" ath="-31.716" atv="32.438" depth="1000.0" linkedscene="scene_seine_bunker" linkedscene_hoffset="0.0" use3dtransition="true" />
-		<hotspot name="spot1972035805" style="skin_hotspotstyle" ath="-64.341" atv="27.397" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" />
-		<hotspot name="spot1972035875" style="skin_hotspotstyle" ath="9.567" atv="24.696" depth="1000.0" linkedscene="scene_seine_tour" linkedscene_hoffset="0.0" use3dtransition="true" />
-		<hotspot name="spot1972040362" style="skin_hotspotstyle" ath="-99.763" atv="36.474" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" />
-
+		<hotspot name="spot1972035688" style="info_hotspot" ath="-31.716" atv="32.438" depth="1000.0" linkedscene="scene_seine_bunker" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1972035805" style="info_hotspot" ath="-64.341" atv="27.397" depth="1000.0" linkedscene="scene_seine_bureau" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1972035875" style="info_hotspot" ath="9.567" atv="24.696" depth="1000.0" linkedscene="scene_seine_tour" linkedscene_hoffset="0.0" use3dtransition="true" />
+		<hotspot name="spot1972040362" style="info_hotspot" ath="-99.763" atv="36.474" depth="1000.0" linkedscene="scene_seine_hemicycle" linkedscene_hoffset="0.0" use3dtransition="true" />
 	</scene>
 
 	<scene name="scene_seine_tour" title="Seine_tour" onstart="" thumburl="panos/Seine_tour.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
-		
 		<control bouncinglimits="calc:image.cube ? true : false" />
-
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
 		<preview url="panos/Seine_tour.tiles/preview.jpg" />
-
 		<image>
 			<cube url="panos/Seine_tour.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
 		</image>
-
-		<hotspot name="spot1972040251" style="skin_hotspotstyle" ath="-125.882" atv="-6.707" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
-
+		<hotspot name="spot1972040251" style="info_hotspot" ath="-125.882" atv="-6.707" depth="1000.0" linkedscene="scene_seine_hotel" linkedscene_hoffset="0.0" use3dtransition="true" />
 	</scene>
-
 
 </krpano>

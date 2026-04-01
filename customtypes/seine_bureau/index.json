@@ -19,13 +19,6 @@
           "placeholder": ""
         }
       },
-      "badge": {
-        "type": "Text",
-        "config": {
-          "label": "categorie",
-          "placeholder": ""
-        }
-      },
       "description": {
         "type": "StructuredText",
         "config": {
@@ -42,13 +35,6 @@
           "placeholder": ""
         }
       },
-      "image": {
-        "type": "Text",
-        "config": {
-          "label": "epoque",
-          "placeholder": ""
-        }
-      },
       "nom_scene_krpano": {
         "type": "Text",
         "config": {
@@ -62,6 +48,41 @@
           "label": "image_apercu",
           "constraint": {},
           "thumbnails": []
+        }
+      },
+      "institution": {
+        "type": "Text",
+        "config": {
+          "label": "institution",
+          "placeholder": ""
+        }
+      },
+      "acces": {
+        "type": "Text",
+        "config": {
+          "label": "acces",
+          "placeholder": ""
+        }
+      },
+      "categorie": {
+        "type": "Text",
+        "config": {
+          "label": "categorie",
+          "placeholder": ""
+        }
+      },
+      "epoque": {
+        "type": "Text",
+        "config": {
+          "label": "epoque",
+          "placeholder": ""
+        }
+      },
+      "badge": {
+        "type": "Text",
+        "config": {
+          "label": "badge",
+          "placeholder": ""
         }
       }
     }

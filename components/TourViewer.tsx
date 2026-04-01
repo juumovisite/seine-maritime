@@ -32,6 +32,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative", overflow: "hidden", fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <iframe
         ref={iframeRef}
         src="/vtour/tour.html"
@@ -42,7 +43,6 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
         title="Visite virtuelle"
       />
 
-      {/* Bordure décorative */}
       <div style={{ position: "absolute", inset: 12, border: "2px solid rgba(255,255,255,0.15)", borderRadius: 20, pointerEvents: "none", zIndex: 5 }} />
 
       {/* Menu latéral gauche */}
@@ -69,6 +69,7 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
               minWidth: 72,
               boxShadow: activeScene === b.n ? "0 4px 16px rgba(0,0,0,0.15)" : "0 2px 8px rgba(0,0,0,0.08)",
               transition: "all 0.3s ease",
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             <span style={{ fontSize: 20, opacity: 0.7 }}>{b.icon}</span>
@@ -84,171 +85,184 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
           right: 30,
           top: "50%",
           transform: "translateY(-50%)",
-          width: 360,
-          background: "rgba(255,252,248,0.96)",
+          width: 380,
           borderRadius: 24,
-          padding: "32px 30px 28px",
+          overflow: "hidden",
+          background: "rgba(255, 255, 255, 0.88)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          boxShadow: "0 25px 60px rgba(0, 0, 0, 0.3)",
           zIndex: 10,
-          backdropFilter: "blur(12px)",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.18)",
         }}>
-          {/* Bouton fermer */}
-          <button onClick={() => setShowFiche(false)} style={{
-            position: "absolute", top: 16, right: 18,
-            background: "none", border: "none", fontSize: 18,
-            cursor: "pointer", color: "#999", lineHeight: 1,
-          }}>✕</button>
+          {/* Background gradient */}
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: "linear-gradient(180deg, rgba(139, 90, 43, 0.15) 0%, rgba(139, 90, 43, 0.05) 30%, rgba(255, 255, 255, 0.95) 50%)",
+            zIndex: 0,
+          }} />
 
-          {/* Catégorie + Badge */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-            {currentScene.data.badge && (
-              <span style={{
-                color: "#1a8a6a",
-                fontSize: 10,
-                fontWeight: 800,
-                textTransform: "uppercase",
-                letterSpacing: 2,
-              }}>
-                {currentScene.data.categorie}
-              </span>
-            )}
-            {currentScene.data.badge && (
-              <span style={{
-                background: "#d4544a",
-                color: "white",
-                padding: "3px 10px",
-                borderRadius: 6,
-                fontSize: 9,
-                fontWeight: 800,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-              }}>
-                {currentScene.data.badge}
-              </span>
-            )}
+          <div style={{ position: "relative", zIndex: 1, padding: "28px 24px 24px" }}>
+            {/* Bouton fermer */}
+            <button onClick={() => setShowFiche(false)} style={{
+              position: "absolute", top: 16, right: 18,
+              background: "none", border: "none", fontSize: 18,
+              cursor: "pointer", color: "#999", lineHeight: 1,
+              fontFamily: "'Inter', sans-serif",
+            }}>✕</button>
+
+            {/* Header: Catégorie + Badge */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              {currentScene.data.categorie && (
+                <span style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: 1.5,
+                  color: "#e8806a",
+                  textTransform: "uppercase",
+                }}>
+                  {currentScene.data.categorie}
+                </span>
+              )}
+              {currentScene.data.badge && (
+                <span style={{
+                  background: "#e8806a",
+                  color: "white",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: 1,
+                  padding: "6px 14px",
+                  borderRadius: 20,
+                  textTransform: "uppercase",
+                }}>
+                  {currentScene.data.badge}
+                </span>
+              )}
+            </div>
+
+            {/* Titre */}
+            <h2 style={{
+              fontSize: 28,
+              fontWeight: 800,
+              color: "#1a2332",
+              marginBottom: 14,
+              lineHeight: 1.15,
+              fontFamily: "'Inter', sans-serif",
+            }}>
+              {currentScene.data.title}
+            </h2>
+
+            {/* Description */}
+            <p style={{
+              fontSize: 13.5,
+              lineHeight: 1.65,
+              color: "#5a6577",
+              marginBottom: 24,
+            }}>
+              {currentScene.data.description?.[0]?.text || ""}
+            </p>
+
+            {/* Infos en grille */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
+              {currentScene.data.institution && (
+                <InfoCard icon="🏛️" label="Institution" value={currentScene.data.institution} />
+              )}
+              {currentScene.data.capacite && (
+                <InfoCard icon="👥" label="Capacité" value={currentScene.data.capacite} />
+              )}
+              {currentScene.data.epoque && (
+                <InfoCard icon="🕰️" label="Époque" value={currentScene.data.epoque} />
+              )}
+              {currentScene.data.acces && (
+                <InfoCard icon="🔐" label="Accès" value={currentScene.data.acces} />
+              )}
+            </div>
+
+            {/* Bouton principal */}
+            <button style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              width: "100%",
+              padding: 16,
+              border: "none",
+              borderRadius: 16,
+              background: "linear-gradient(135deg, #5bb8a9, #4da89a)",
+              color: "white",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              cursor: "pointer",
+              boxShadow: "0 4px 15px rgba(91, 184, 169, 0.35)",
+              marginBottom: 12,
+            }}>
+              Explorer l&apos;histoire →
+            </button>
+
+            {/* Bouton secondaire */}
+            <button style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              padding: 16,
+              border: "2px solid #d9dee5",
+              borderRadius: 16,
+              background: "transparent",
+              color: "#1a2332",
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}>
+              Fiche Technique
+            </button>
           </div>
-
-          {/* Titre */}
-          <h2 style={{
-            fontSize: 28,
-            fontWeight: 900,
-            margin: "0 0 14px",
-            color: "#1a2a35",
-            lineHeight: 1.15,
-          }}>
-            {currentScene.data.title}
-          </h2>
-
-          {/* Description */}
-          <p style={{
-            fontSize: 13.5,
-            color: "#5a6a75",
-            lineHeight: 1.7,
-            margin: "0 0 22px",
-          }}>
-            {currentScene.data.description?.[0]?.text || ""}
-          </p>
-
-          {/* Infos en grille */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 22 }}>
-            {currentScene.data.institution && (
-              <InfoCard icon="🏛" label="Institution" value={currentScene.data.institution} />
-            )}
-            {currentScene.data.capacite && (
-              <InfoCard icon="👥" label="Capacité" value={currentScene.data.capacite} />
-            )}
-            {currentScene.data.epoque && (
-              <InfoCard icon="🏰" label="Époque" value={currentScene.data.epoque} />
-            )}
-            {currentScene.data.acces && (
-              <InfoCard icon="🔒" label="Accès" value={currentScene.data.acces} />
-            )}
-          </div>
-
-          {/* Boutons */}
-          <button style={{
-            width: "100%",
-            padding: "15px 0",
-            background: "#1a8a6a",
-            color: "white",
-            border: "none",
-            borderRadius: 30,
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            letterSpacing: 0.8,
-            marginBottom: 10,
-            transition: "background 0.3s",
-          }}>
-            Explorer l&apos;étage →
-          </button>
-
-          <button style={{
-            width: "100%",
-            padding: "14px 0",
-            background: "transparent",
-            color: "#1a2a35",
-            border: "1.5px solid #d0d5da",
-            borderRadius: 30,
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-            letterSpacing: 0.5,
-          }}>
-            Fiche technique
-          </button>
         </div>
       )}
 
       {/* Barre de navigation en bas */}
-      <div style={{
-        position: "absolute",
-        bottom: 24,
-        left: "50%",
-        transform: "translateX(-50%)",
-        zIndex: 10,
-        textAlign: "center",
-      }}>
-        <p style={{
-          color: "rgba(255,255,255,0.7)",
-          fontSize: 10,
-          letterSpacing: 4,
-          textTransform: "uppercase",
-          marginBottom: 10,
-          textShadow: "0 1px 3px rgba(0,0,0,0.4)",
-        }}>
-          Explorez à 360°
-        </p>
-        <div style={{
-          display: "flex",
-          gap: 0,
-          background: "rgba(255,252,248,0.92)",
-          borderRadius: 16,
-          overflow: "hidden",
-          backdropFilter: "blur(12px)",
-          boxShadow: "0 6px 24px rgba(0,0,0,0.12)",
-        }}>
-          {scenes.map((scene) => (
-            <button
-              key={scene.id}
-              onClick={() => changeScene(scene.data.nom_scene_krpano)}
-              style={{
-                padding: "16px 30px",
-                border: "none",
-                background: activeScene === scene.data.nom_scene_krpano ? "#1a8a6a" : "transparent",
-                color: activeScene === scene.data.nom_scene_krpano ? "white" : "#1a2a35",
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: "pointer",
-                textTransform: "uppercase",
-                letterSpacing: 0.8,
-                transition: "all 0.3s ease",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {scene.data.title}
-            </button>
-          ))}
+      <div style={{ position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)", zIndex: 10, textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.4)" }} />
+          <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 10, letterSpacing: 4, textTransform: "uppercase", margin: 0, textShadow: "0 1px 3px rgba(0,0,0,0.3)", whiteSpace: "nowrap" }}>
+            Explorez à 360°
+          </p>
+          <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.4)" }} />
+        </div>
+        <div style={{ display: "flex", gap: 0, background: "rgba(255,252,248,0.92)", borderRadius: 16, overflow: "hidden", backdropFilter: "blur(12px)", boxShadow: "0 6px 24px rgba(0,0,0,0.12)", padding: "4px 8px" }}>
+          {scenes
+            .filter((scene) => scene.data.nom_scene_krpano !== "scene_seine_hotel")
+            .map((scene) => (
+              <button
+                key={scene.id}
+                onClick={() => changeScene(scene.data.nom_scene_krpano)}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#8B3A2A"; }}
+                onMouseLeave={(e) => { if (activeScene !== scene.data.nom_scene_krpano) { e.currentTarget.style.color = "#6b7580"; }}}
+                style={{
+                  padding: "10px 24px",
+                  border: "none",
+                  background: "transparent",
+                  color: activeScene === scene.data.nom_scene_krpano ? "#8B3A2A" : "#6b7580",
+                  fontSize: 14,
+                  fontWeight: activeScene === scene.data.nom_scene_krpano ? 700 : 500,
+                  cursor: "pointer",
+                  letterSpacing: 0.3,
+                  transition: "all 0.3s ease",
+                  whiteSpace: "nowrap",
+                  borderBottom: activeScene === scene.data.nom_scene_krpano ? "2px solid #8B3A2A" : "2px solid transparent",
+                  paddingBottom: 8,
+                  fontFamily: "'Inter', sans-serif",
+                }}
+              >
+                {scene.data.title}
+              </button>
+            ))}
         </div>
       </div>
     </div>
@@ -258,26 +272,28 @@ export default function TourViewer({ scenes }: { scenes: any[] }) {
 function InfoCard({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
     <div style={{
-      background: "rgba(240,238,233,0.7)",
-      borderRadius: 14,
-      padding: "14px 12px",
+      background: "rgba(255, 255, 255, 0.85)",
+      border: "1px solid rgba(0, 0, 0, 0.06)",
+      borderRadius: 16,
+      padding: 16,
       textAlign: "center",
+      backdropFilter: "blur(10px)",
     }}>
-      <div style={{ fontSize: 16, marginBottom: 4 }}>{icon}</div>
+      <div style={{ fontSize: 20, marginBottom: 6 }}>{icon}</div>
       <div style={{
-        fontSize: 9,
-        color: "#8a9099",
+        fontSize: 10,
+        fontWeight: 600,
+        letterSpacing: 0.8,
+        color: "#e8806a",
         textTransform: "uppercase",
-        letterSpacing: 1.2,
         marginBottom: 4,
-        fontWeight: 700,
       }}>
         {label}
       </div>
       <div style={{
-        fontSize: 13,
-        fontWeight: 800,
-        color: "#1a2a35",
+        fontSize: 14,
+        fontWeight: 700,
+        color: "#1a2332",
       }}>
         {value}
       </div>

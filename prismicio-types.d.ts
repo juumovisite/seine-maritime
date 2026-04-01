@@ -85,17 +85,6 @@ interface SeineBureauDocumentData {
   title: prismic.KeyTextField;
 
   /**
-   * categorie field in *Seine_bureau*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: seine_bureau.badge
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */
-  badge: prismic.KeyTextField;
-
-  /**
    * description field in *Seine_bureau*
    *
    * - **Field Type**: Rich Text
@@ -118,17 +107,6 @@ interface SeineBureauDocumentData {
   capacite: prismic.KeyTextField;
 
   /**
-   * epoque field in *Seine_bureau*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: seine_bureau.image
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/fields/text
-   */
-  image: prismic.KeyTextField;
-
-  /**
    * nom_scene_krpano field in *Seine_bureau*
    *
    * - **Field Type**: Text
@@ -149,6 +127,61 @@ interface SeineBureauDocumentData {
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
   image_apercu: prismic.ImageField<never>;
+
+  /**
+   * institution field in *Seine_bureau*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: seine_bureau.institution
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  institution: prismic.KeyTextField;
+
+  /**
+   * acces field in *Seine_bureau*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: seine_bureau.acces
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  acces: prismic.KeyTextField;
+
+  /**
+   * categorie field in *Seine_bureau*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: seine_bureau.categorie
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  categorie: prismic.KeyTextField;
+
+  /**
+   * epoque field in *Seine_bureau*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: seine_bureau.epoque
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  epoque: prismic.KeyTextField;
+
+  /**
+   * badge field in *Seine_bureau*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: seine_bureau.badge
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  badge: prismic.KeyTextField;
 }
 
 /**
